@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 public class Person {
     private String name;
     private int age;
@@ -25,3 +26,32 @@ public class Person {
         System.out.println("Age: " + age);
     }
 }
+=======
+public class Person {
+    private String name;
+    private int age;
+
+    
+    public Person() {
+        this.name = "Unknown";
+        this.age = 0;
+    }
+
+    
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    
+    public Person(Person other) {
+        this.name = other.name;
+        this.age = other.age;
+    }
+
+    public void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+    }
+}
+>>>>>>> 2a3bf8e (first)
