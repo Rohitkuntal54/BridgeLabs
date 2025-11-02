@@ -1,0 +1,103 @@
+interface Loanable {
+    void applyForLoan(double amount);
+    boolean calculateLoanEligibility();
+}
+
+abstract class BankAccount {
+    private String accountNumber;
+    private String holderName;
+    private double balance;
+
+    public BankAccount(String accNo, String holder, double balance) {
+        this.accountNumber = accNo;
+        this.holderName = holder;
+        this.balance = balance;
+    }
+
+    
+    public String getAccountNumber() { return accountNumber; }
+    public String getHolderName() { return holderName; }
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+        System.out.println(holderName + " deposited: " + amount);
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) balance -= amount;
+        else System.out.println("Insufficient funds for " + holderName);
+    }
+
+    public abstract double calculateInterest();
+
+    public void displayDetails() {
+        System.out.println("Account: " + accountNumber + ", Holder: " + holderName + ", Balance: " + balance);
+    }
+}
+
+
+class SavingsAccount extends BankAccount implements Loanable {
+    public SavingsAccount(String accNo, String holder, double balance) {
+        super(accNo, holder, balance);
+    }
+
+    @Override
+    public double calculateInterest() {
+        return getBalance() * 0.04; 
+    }
+
+    @Override
+    public void applyForLoan(double amount) {
+        System.out.println("Loan of " + amount + " applied by " + getHolderName());
+    }
+
+    @Override
+    public boolean calculateLoanEligibility() {
+        return getBalance() >= 5000;
+    }
+}
+
+
+class CurrentAccount extends BankAccount implements Loanable {
+    public CurrentAccount(String accNo, String holder, double balance) {
+        super(accNo, holder, balance);
+    }
+
+    @Override
+    public double calculateInterest() {
+        return getBalance() * 0.02; 
+    }
+
+    @Override
+    public void applyForLoan(double amount) {
+        System.out.println("Business loan of " + amount + " applied by " + getHolderName());
+    }
+
+    @Override
+    public boolean calculateLoanEligibility() {
+        return getBalance() >= 10000;
+    }
+}
+
+public class ques4 {
+    public static void main(String[] args) {
+        BankAccount[] accounts = {
+            new SavingsAccount("SAV001", "Alice", 8000),
+            new CurrentAccount("CUR002", "Bob", 15000)
+        };
+
+        for (BankAccount acc : accounts) {
+            acc.displayDetails();
+            acc.deposit(2000);
+            acc.withdraw(1000);
+            double interest = acc.calculateInterest();
+            System.out.println("Interest Earned: " + interest);
+
+            Loanable loanAcc = (Loanable) acc;
+            loanAcc.applyForLoan(5000);
+            System.out.println("Loan Eligibility: " + loanAcc.calculateLoanEligibility());
+            System.out.println("----------------------------------");
+        }
+    }
+}
